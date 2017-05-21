@@ -15,7 +15,7 @@ class TestAST(u.TestCase):
         
     def testLoopExceptions(self):
         self.assertRaises(TypeError, Loop, ['a', 'b'], {})
-        self.assertRaises(TypeError, Loop, ['a', 'b'], range(5))
+        self.assertRaises(TypeError, Loop, ['a', 'b'], list(range(5)))
         self.assertRaises(ValueError, Loop, ['a', 'a'], [])
         self.assertRaises(ValueError, Loop, ['a', 'b'], [[]])
         self.assertRaises(TypeError, Loop, 'not a list!', [])
@@ -39,7 +39,7 @@ class TestAST(u.TestCase):
     def testData(self):
         myData = Data('abc', {'s1': Save({'x': 'y'}, [])})
         self.assertEqual(myData.name, 'abc')
-        self.assertEqual(myData.saves['s1'].datums.keys(), ['x'])
+        self.assertEqual(list(myData.saves['s1'].datums.keys()), ['x'])
         
     def testDataExceptions(self):
         self.assertRaises(TypeError, Data, 'abc', [])

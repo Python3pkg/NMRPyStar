@@ -1,12 +1,12 @@
 from .. import parser
 import json
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import numpy
 import sys
 
 
 def parseUrl(url):
-    page = urllib2.urlopen(url)
+    page = urllib.request.urlopen(url)
     inputStr = page.read()
     page.close()
     return parser.parse_nmrstar_ast(inputStr)
@@ -30,10 +30,10 @@ def getChemicalShifts(dataBlock, saveName='assigned_chem_shift_list_1'):
 
 def query(model):
     shifts = getChemicalShifts(model)
-    many = [(k, (len(v), numpy.std(v))) for (k, v) in shifts.items()]
-    devs = filter(lambda x: x[1][0] > 1, sorted(many, key=lambda x: x[0]))
+    many = [(k, (len(v), numpy.std(v))) for (k, v) in list(shifts.items())]
+    devs = [x for x in sorted(many, key=lambda x: x[0]) if x[1][0] > 1]
     for result in sorted(devs, key=lambda x: (x[0][1], x[1][1])):
-        print result
+        print(result)
     return None
 
 def from_url():

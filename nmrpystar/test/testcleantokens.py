@@ -25,7 +25,7 @@ class TestCleanTokens(u.TestCase):
         ]
         for (inp, name, my_type, value, message) in cases:
             res = clean_token({'_name': 'unquoted', '_state': None, 'first': inp[0], 'rest': list(inp[1:])})
-            print message, res
+            print(message, res)
             if name == 'reserved':
                 if my_type in ['save open', 'data open']:
                     self.assertEqual(token('reserved', None, keyword=my_type, value=value), res)

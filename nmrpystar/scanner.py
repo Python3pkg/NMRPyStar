@@ -14,13 +14,13 @@ BLANKS   = ' \t'
 SPACES   = '\n\r \t'
 SPECIALS = '\n\r \t"#\'_' # double-quote, pound, single-quote, underscore
 
-newline, blank, space, special = map(oneOf, [NEWLINES, BLANKS, SPACES, SPECIALS])
+newline, blank, space, special = list(map(oneOf, [NEWLINES, BLANKS, SPACES, SPECIALS]))
 
 identifier = node('identifier',
                   ('open', literal('_')),
                   ('value', cut('expected non-whitespace', many1(not1(space)))))
 
-sc, sq, dq = map(literal, ';\'"')
+sc, sq, dq = list(map(literal, ';\'"'))
 
 _end = not0(item)
 _not_space_or_end = not0(alt(space, _end))

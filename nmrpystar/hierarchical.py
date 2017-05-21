@@ -7,7 +7,7 @@ from .unparse.cst          import (node, cut)
 
 def match(**kwargs):
     def test(t):
-        for (k, v) in kwargs.items():
+        for (k, v) in list(kwargs.items()):
             if t[k] != v:
                 return False
         return True

@@ -28,7 +28,7 @@ def node(name, *pairs):
     3. grabs state at which parsers started
     4. adds an error frame
     """
-    names = map(lambda x: x[0], pairs)
+    names = [x[0] for x in pairs]
     if len(names) != len(set(names)):
         raise ValueError('duplicate names')
     if '_name' in names:

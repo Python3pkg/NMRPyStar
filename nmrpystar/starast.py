@@ -45,7 +45,7 @@ class Loop(StarBase):
                 'rows': self.rows}
 
     def getRowAsDict(self, rowIndex):
-        return dict(zip(self.keys, self.rows[rowIndex]))
+        return dict(list(zip(self.keys, self.rows[rowIndex])))
 
 
 class Save(StarBase):
@@ -75,7 +75,7 @@ class Data(StarBase):
     def toJSONObject(self):
         return {'type'       : 'Data', 
                 'name'       : self.name, 
-                'save frames': dict((k, s.toJSONObject()) for (k, s) in self.saves.items())}
+                'save frames': dict((k, s.toJSONObject()) for (k, s) in list(self.saves.items()))}
 
 
 
@@ -131,7 +131,7 @@ def buildSave(save):
 
     for d in save['datums']:
         key, value = d['key']['value'], d['value']['value']
-        if datums.has_key(key):
+        if key in datums:
             return bad(nodetype='save', message='duplicate key',
                        key=key, first=key_check[key], second=d['key']['pos'])
         datums[key] = value

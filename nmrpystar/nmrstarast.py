@@ -26,7 +26,7 @@ class Loop(starast.StarBase):
                 'rows': self.rows}
 
     def getRowAsDict(self, rowIndex):
-        return dict(zip(self.keys, self.rows[rowIndex]))
+        return dict(list(zip(self.keys, self.rows[rowIndex])))
 
 
 class Save(starast.StarBase):
@@ -42,7 +42,7 @@ class Save(starast.StarBase):
         self.loops = loops
 
     def toJSONObject(self):
-        loops = dict([(name, loop.toJSONObject()) for (name, loop) in self.loops.items()])
+        loops = dict([(name, loop.toJSONObject()) for (name, loop) in list(self.loops.items())])
         return {'type'      : 'Save',
                 'datums'    : self.datums,
                 'prefix'    : self.prefix,
@@ -61,7 +61,7 @@ class Data(starast.StarBase):
     def toJSONObject(self):
         return {'type'       : 'Data',
                 'name'       : self.name,
-                'save frames': dict((k, s.toJSONObject()) for (k, s) in self.saves.items())}
+                'save frames': dict((k, s.toJSONObject()) for (k, s) in list(self.saves.items()))}
 
 
 class ASTError(ValueError):
@@ -141,7 +141,7 @@ def build_save(name, save):
         bad(nodetype='save', message='missing key/values', save=save)
 
     prefixes = set([])
-    for (ident, value) in save.datums.items():
+    for (ident, value) in list(save.datums.items()):
         pre, key = parse_ident(ident)
         prefixes.add(pre)
         datums[key] = value
@@ -180,7 +180,7 @@ def build_save(name, save):
 
 def build_data(data):
     saves = {}
-    for (name, my_save) in data.saves.items():
+    for (name, my_save) in list(data.saves.items()):
         save = build_save(name, my_save)
         saves[name] = save
     return Data(data.name, saves)
@@ -191,5 +191,5 @@ def build_nmrstar_ast(data):
         raise TypeError(("expected starast.Data node", data))
     try:
         return MaybeError.pure(build_data(data))
-    except ASTError, e:
+    except ASTError as e:
         return MaybeError.error(e.error)

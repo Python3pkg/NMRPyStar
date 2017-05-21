@@ -65,7 +65,7 @@ def parse_cst(string, f_token=token_handler, f_parser=parser_handler):
     # part 2
     tokens = [t for t in tokenized.value['result'] if t['_name'] not in ['whitespace', 'comment']]
     # part 3
-    cleaned = map(clean_token, tokens)
+    cleaned = list(map(clean_token, tokens))
     # part 4
     cst = run(nmrstar, cleaned, _FIRST_TOKEN_INDEX)
     if cst.status != 'success':
